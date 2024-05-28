@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-lg-8 col-md-6 col-sm-12 order-lg-last order-md-last order-sm-last">
+			<div>
+				<h2>{{ user.username }}'s Profile</h2>
+				<form method="post">{% csrf_token %}
+
+					{{account_form|crispy}}
+
+					{% for field in account_form %}
+						{% for error in field.errors %}
+							<p style="color: red;">{{error}}</p>
+						{% endfor %}
+					{% endfor %}
+
+					{% if account_form.non_field_errors %}
+						<div style="color:red;">
+							<p>{{account_form.non_field_errors}}</p>
+						</div>
+					{% endif %}
+					<button type="submit" class="btn btn-success btn-block mt-3">Save changes</button>
+
+				</form>
+				<div class="mt-3">
+					<a href="{% url 'account_email' %}">Change Email?</a>
+					<a href="{% url 'account_change_password' %}">Change Password?</a>
+				</div>
+				</div>
+		</div>
+		{% include 'feed/sidebar.html' %}
+	</div>
+</div>
+
+
+{% endblock content %}
